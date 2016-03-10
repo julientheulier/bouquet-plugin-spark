@@ -5,11 +5,7 @@
 	<parent>
 		<groupId>io.openbouquet</groupId>
 		<artifactId>bouquet-parent</artifactId>
-<<<<<<< HEAD
-		<version>4.2.2-SNAPSHOT</version>
-=======
-		<version>4.2.1</version>
->>>>>>> master
+		<version>4.2.2</version>
 		<relativePath>../bouquet-parent/pom.xml</relativePath>
 	</parent>
 
