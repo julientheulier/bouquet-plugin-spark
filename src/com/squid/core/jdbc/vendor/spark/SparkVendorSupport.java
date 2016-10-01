@@ -25,6 +25,7 @@ package com.squid.core.jdbc.vendor.spark;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.Map;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -36,6 +37,8 @@ import com.squid.core.database.model.DatabaseProduct;
 import com.squid.core.jdbc.formatter.DataFormatter;
 import com.squid.core.jdbc.formatter.IJDBCDataFormatter;
 import com.squid.core.jdbc.vendor.DefaultVendorSupport;
+import com.squid.core.jdbc.vendor.JdbcUrlParameter;
+import com.squid.core.jdbc.vendor.JdbcUrlTemplate;
 
 public class SparkVendorSupport extends DefaultVendorSupport {
 	
@@ -76,4 +79,39 @@ public class SparkVendorSupport extends DefaultVendorSupport {
 	public VendorMetadataSupport getVendorMetadataSupport() {
 		return SPARK;
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.squid.core.jdbc.vendor.DefaultVendorSupport#getJdbcUrlTemplate()
+	 */
+	@Override
+	public JdbcUrlTemplate getJdbcUrlTemplate() {
+		JdbcUrlTemplate template = new JdbcUrlTemplate("Hive/SparkSQL","jdbc:hive2://[<hostname>][:<port=10000>]");
+		template.add(new JdbcUrlParameter("hostname", false));
+		template.add(new JdbcUrlParameter("port", true, "10000"));
+		return template;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.squid.core.jdbc.vendor.DefaultVendorSupport#buildJdbcUrl(java.util.Map)
+	 */
+	@Override
+	public String buildJdbcUrl(Map<String, String> arguments) throws IllegalArgumentException {
+		String url = "jdbc:hive2://";
+		String hostname = arguments.get("hostname");
+		if (hostname==null) throw new IllegalArgumentException("cannot build JDBC url, missing mandatory argument 'hostname'");
+		url += hostname;
+		String port = arguments.get("port");
+		if (port!=null) {
+			// check it's an integer
+			try {
+				int p = Integer.valueOf(port);
+				url += ":"+Math.abs(p);// just in case
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("cannot build JDBC url, 'port' value must be a valid port number");
+			}
+		}
+		// validate ?
+		return url;
+	}
+	
 }
