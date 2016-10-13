@@ -145,7 +145,7 @@ public class SparkSkinProvider extends DefaultSkinProvider
 			if (product!=null){
 				if (IMetadataEngine.SPARK_NAME.equalsIgnoreCase(product.getProductName())) {
 					return PERFECT_MATCH;
-				} else if (IMetadataEngine.HIVE_NAME.equalsIgnoreCase(product.getProductName())){
+				} else if (IMetadataEngine.HIVE_NAME.equalsIgnoreCase(product.getProductName())) {
 					return APPLICABLE;
 				} else {
 					return NOT_APPLICABLE;
