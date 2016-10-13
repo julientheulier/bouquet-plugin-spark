@@ -43,13 +43,16 @@ import com.squid.core.jdbc.vendor.JdbcUrlTemplate;
 public class SparkVendorSupport extends DefaultVendorSupport {
 	
 	public static final String VENDOR_ID =  IMetadataEngine.SPARK_NAME;
+	
+	public static final String HIVE_VERSION = "1.1.0";
+	
     static final Logger logger = LoggerFactory.getLogger(SparkVendorSupport.class);
 	static final VendorMetadataSupport SPARK = new SparkMetadataSupport();
 	private Properties properties;
 
 	@Override
 	public String getVendorId() {
-		return VENDOR_ID;
+		return VENDOR_ID+" ("+HIVE_VERSION+")";
 	}
 
 	@Override
@@ -66,7 +69,16 @@ public class SparkVendorSupport extends DefaultVendorSupport {
 
 	@Override
 	public boolean isSupported(DatabaseProduct product) {
-		return VENDOR_ID.equals(product.getProductName());
+		return VENDOR_ID.equals(product.getProductName()) && isVersionSupported(product);
+	}
+	
+	/**
+	 * only supporting 1.1.x versions
+	 * @param product
+	 * @return
+	 */
+	public boolean isVersionSupported(DatabaseProduct product) {
+		return product.getMajorVersion()==1 && product.getMinorVersion()==1;
 	}
 
 	@Override
