@@ -110,7 +110,7 @@ public class SparkVendorSupport extends DefaultVendorSupport {
 	public String buildJdbcUrl(Map<String, String> arguments) throws IllegalArgumentException {
 		String url = "jdbc:hive2://";
 		String hostname = arguments.get("hostname");
-		if (hostname==null) throw new IllegalArgumentException("cannot build JDBC url, missing mandatory argument 'hostname'");
+		if (hostname==null) throw new IllegalArgumentException("cannot build JDBC url, missing mandatory argument [hostname]");
 		url += hostname;
 		String port = arguments.get("port");
 		if (port!=null) {
@@ -119,7 +119,7 @@ public class SparkVendorSupport extends DefaultVendorSupport {
 				int p = Integer.valueOf(port);
 				url += ":"+Math.abs(p);// just in case
 			} catch (NumberFormatException e) {
-				throw new IllegalArgumentException("cannot build JDBC url, 'port' value must be a valid port number");
+				throw new IllegalArgumentException("cannot build JDBC url, [port] value must be a valid port number");
 			}
 		}
 		// validate ?
