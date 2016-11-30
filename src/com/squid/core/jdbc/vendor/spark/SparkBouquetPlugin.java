@@ -5,13 +5,16 @@ import java.net.URLClassLoader;
 import java.sql.Driver;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.squid.core.database.plugins.BaseBouquetPlugin;
 
 public class SparkBouquetPlugin extends BaseBouquetPlugin {
 
-	
-	
-	public static final String driverName = "org.apache.hive.jdbc.HiveDriver" ;
+	private static final Logger logger = LoggerFactory.getLogger(SparkBouquetPlugin.class);
+
+	public static final String driverName = "org.apache.hive.jdbc.HiveDriver";
 
 	@Override
 	public void loadDriver() {
@@ -19,28 +22,21 @@ public class SparkBouquetPlugin extends BaseBouquetPlugin {
 		paths[0] = this.getClass().getProtectionDomain().getCodeSource().getLocation();
 
 		// load the driver within an isolated classLoader
-		URLClassLoader cl = new URLClassLoader(paths);
+		this.driverCL = new URLClassLoader(paths);
 		ClassLoader rollback = Thread.currentThread().getContextClassLoader();
-		Thread.currentThread().setContextClassLoader(cl);
+		Thread.currentThread().setContextClassLoader(driverCL);
 
 		this.drivers = new ArrayList<Driver>();
-		
+
 		try {
-			Driver driver = (Driver) Class.forName(driverName, true, cl).newInstance();
-			drivers.add(driver) ;
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Driver driver = (Driver) Class.forName(driverName, true, driverCL).newInstance();
+			drivers.add(driver);
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			logger.error("Could not load driver " + driverName + " for Spark plugin");
+			;
 		}
 		Thread.currentThread().setContextClassLoader(rollback);
 
 	}
-
 
 }
