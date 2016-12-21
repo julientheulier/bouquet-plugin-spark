@@ -30,9 +30,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import com.squid.core.database.impl.ConnectionShim;
-import com.squid.core.database.impl.DefaultDriverShim;
+import com.squid.core.database.impl.DriverShim;
 
-public class SparkDriverShim extends DefaultDriverShim {
+public class SparkDriverShim extends DriverShim {
 
 	public SparkDriverShim(Driver d) {
 		super(d);
