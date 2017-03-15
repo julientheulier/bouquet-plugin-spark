@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.squid.core.database.impl.DefaultDriverShim;
 import com.squid.core.database.impl.DriverShim;
 import com.squid.core.database.plugins.BaseBouquetPlugin;
 
@@ -67,7 +68,8 @@ public class SparkBouquetPlugin extends BaseBouquetPlugin {
 	public ArrayList<DriverShim> getDrivers() {
 		ArrayList<DriverShim> shims = new ArrayList<DriverShim>();
 		for (Driver d : this.drivers) {
-			shims.add(new SparkDriverShim(d));
+//			shims.add(new SparkDriverShim(d));
+			shims.add(new DefaultDriverShim(d));			
 		}
 		return shims;
 	}
