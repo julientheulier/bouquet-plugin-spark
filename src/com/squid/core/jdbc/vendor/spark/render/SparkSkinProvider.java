@@ -99,7 +99,7 @@ public class SparkSkinProvider extends DefaultSkinProvider
 		registerOperatorRender(AddMonthsOperatorDefinition.ADD_MONTHS, new AddMonthsAsIntervalOperatorRenderer()); //TODO test
 		//
 		registerOperatorRender(OperatorDefinition.getExtendedId(IntrinsicOperators.AVG),new SparkAvgRenderer()); //TODO test
-		registerOperatorRender(OperatorDefinition.getExtendedId(IntrinsicOperators.VARIANCE),new SparkVarStdevRenderer()); //TODO test
+		registerOperatorRender(OperatorDefinition.getExtendedId(IntrinsicOperators.VAR_POP),new SparkVarStdevRenderer()); //TODO test
 		registerOperatorRender(OperatorDefinition.getExtendedId(IntrinsicOperators.VAR_SAMP),new SparkVarStdevRenderer()); //TODO test
 		registerOperatorRender(OperatorDefinition.getExtendedId(IntrinsicOperators.STDDEV_POP),new SparkVarStdevRenderer()); //TODO test
 		registerOperatorRender(OperatorDefinition.getExtendedId(IntrinsicOperators.STDDEV_SAMP),new SparkVarStdevRenderer()); //TODO test
